@@ -1,9 +1,5 @@
-import { JetFile } from "../jet-file";
+import { JetFile } from "../index";
 
-const file = new JetFile<{ [value: string]: number }>(
+const file = new JetFile<{ a: string, b: number }>(
   "./path/to/ressource/hi.json"
 );
-
-for (let i = 0; i <= 1500; i++) {
-  file.set(i.toString(), i);
-}

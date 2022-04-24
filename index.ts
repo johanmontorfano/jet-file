@@ -9,6 +9,8 @@ import {
 /** all the exit listeners */
 const exitListeners: (() => void)[] = [];
 
+type ArrayElement<A> = A extends readonly (infer T)[] ? T : never;
+
 /** create a new jet-file instance */
 export class JetFile<FILE_TYPE extends { [attr: string]: any }> {
   private path: string;
@@ -75,6 +77,15 @@ export class JetFile<FILE_TYPE extends { [attr: string]: any }> {
     return JSON.parse(
       Buffer.from(ressource.replace("[string]", ""), "base64").toString("utf-8")
     );
+  }
+
+  /** return the entries of a json file */
+  entries(): (keyof FILE_TYPE)[] {
+    const fileEntries: (keyof FILE_TYPE)[] = [];
+    for (const entry in this.data) {
+      fileEntries.push(entry);
+    }
+    return fileEntries;
   }
 
   /** get a key of the file (it's uncrypted during this process) */
