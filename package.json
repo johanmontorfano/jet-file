@@ -1,0 +1,15 @@
+{
+    "name": "jet-file",
+    "version": "1.0.0",
+    "description": "A quick I/O utility, designed to be used on realtime infrastructures with encryption support.",
+    "scripts": {
+        "test": "ts-node ./tests/io.ts",
+        "build": "tsc"
+    },
+    "dependencies": {
+        "fs-extra": "^10.1.0"
+    },
+    "devDependencies": {
+        "@types/fs-extra": "^9.0.13"
+    }
+}
