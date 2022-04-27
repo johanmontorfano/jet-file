@@ -6,8 +6,7 @@
     "scripts": {
         "test": "ts-node ./tests/io.ts",
         "build": "tsc",
-        "commit": "git add .; git commit -am '1.0.2'; git push; git fetch",
-        "publish": "npm publish"
+        "commit": "git add .; git commit -am '1.0.2'; git push; git fetch"
     },
     "dependencies": {
         "fs-extra": "^10.1.0"

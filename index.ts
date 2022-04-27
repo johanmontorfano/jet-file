@@ -9,8 +9,6 @@ import {
 /** all the exit listeners */
 const exitListeners: (() => void)[] = [];
 
-type ArrayElement<A> = A extends readonly (infer T)[] ? T : never;
-
 /** create a new jet-file instance */
 export class JetFile<FILE_TYPE extends { [attr: string]: any }> {
   private path: string;
@@ -26,7 +24,10 @@ export class JetFile<FILE_TYPE extends { [attr: string]: any }> {
       .split("/")
       .forEach((f, i) => {
         /** path which will be checked for existence */
-        const currentPath = path.split("/").splice(0, i).join("/");
+        const currentPath = path
+          .split("/")
+          .splice(0, i + 1)
+          .join("/");
 
         if (!existsSync(currentPath) && currentPath !== "")
           mkdirSync(currentPath);
@@ -46,6 +47,11 @@ export class JetFile<FILE_TYPE extends { [attr: string]: any }> {
   /** read data from the file */
   private diskGet(): FILE_TYPE {
     return readJsonSync(this.path);
+  }
+
+  /** save data  */
+  private save() {
+    writeJsonSync(this.path, this.data);
   }
 
   /** automatically encrypt and type a data element
@@ -71,9 +77,10 @@ export class JetFile<FILE_TYPE extends { [attr: string]: any }> {
    */
   private decryptRessource(ressource: string) {
     if (ressource.startsWith("[int]"))
-      parseInt(
+      return parseInt(
         Buffer.from(ressource.replace("[int]", ""), "base64").toString("utf-8")
       );
+
     return JSON.parse(
       Buffer.from(ressource.replace("[string]", ""), "base64").toString("utf-8")
     );
@@ -97,6 +104,7 @@ export class JetFile<FILE_TYPE extends { [attr: string]: any }> {
   /** set a key of the file (it's crypted during this process) */
   set<KEY extends keyof FILE_TYPE>(key: KEY, value: FILE_TYPE[KEY]) {
     this.data[key] = this.encryptRessource(value) as FILE_TYPE[KEY];
+    this.save();
   }
 }
 
