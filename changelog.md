@@ -1,8 +1,10 @@
 # Changelogs
 
-## 1.0.3
+## 1.0.4
 - Added the ability to automatically handle and encrypt non-encrypted fields without crashing. External databases can be now used with `JetFile` without any changes.
 - Removed an old feature of `JetFile` which created exit listeners for data saving, but the system is already trustable without those extraneous listeners.
+## 1.0.3
+- Resolved some performance issues relative to data handling from the disk.
 
 ## 1.0.2
 - Resolved an issue which prevented paths from being properly created.
