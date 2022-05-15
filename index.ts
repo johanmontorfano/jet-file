@@ -6,9 +6,6 @@ import {
   writeJsonSync,
 } from "fs-extra";
 
-/** all the exit listeners */
-const exitListeners: (() => void)[] = [];
-
 /** create a new jet-file instance */
 export class JetFile<FILE_TYPE extends { [attr: string]: any }> {
   private path: string;
@@ -37,11 +34,6 @@ export class JetFile<FILE_TYPE extends { [attr: string]: any }> {
 
     // initialize the data field
     this.data = this.diskGet();
-
-    // add an exit listener
-    exitListeners.push(() => {
-      writeJsonSync(path, this.data);
-    });
   }
 
   /** read data from the file */
@@ -98,6 +90,15 @@ export class JetFile<FILE_TYPE extends { [attr: string]: any }> {
   /** get a key of the file (it's uncrypted during this process) */
   get<KEY extends keyof FILE_TYPE>(key: KEY): FILE_TYPE[KEY] | null {
     if (this.data[key] === undefined) return null;
+    // if the ressource is not an encrypted ressource (not string-typed, not starting)
+    // with [int] or [string] the function encrypts the ressource and then reads it
+    if (
+      typeof this.data[key] !== "string" ||
+      !this.data[key].startsWith("[string]") ||
+      !this.data[key].startsWith("[int]")
+    )
+      this.set(key, this.data[key]);
+
     return this.decryptRessource(this.data[key]);
   }
 
@@ -107,8 +108,3 @@ export class JetFile<FILE_TYPE extends { [attr: string]: any }> {
     this.save();
   }
 }
-
-process.on("exit", () => {
-  // perform an exit action on JetFile instances
-  exitListeners.forEach((listener) => listener());
-});
