@@ -94,8 +94,8 @@ export class JetFile<FILE_TYPE extends { [attr: string]: any }> {
     // with [int] or [string] the function encrypts the ressource and then reads it
     if (
       typeof this.data[key] !== "string" ||
-      !this.data[key].startsWith("[string]") ||
-      !this.data[key].startsWith("[int]")
+      (!this.data[key].startsWith("[string]") &&
+        !this.data[key].startsWith("[int]"))
     )
       this.set(key, this.data[key]);
 
