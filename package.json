@@ -1,12 +1,12 @@
 {
     "name": "jet-file",
-    "version": "1.0.6",
-    "description": "A quick I/O utility, designed to be used on realtime infrastructures with encryption support.",
+    "version": "2.0.0",
+    "description": "An efficient, production-ready, encrypted database utility based on a key system. ",
     "main": "./dist/index.js",
     "scripts": {
         "test": "ts-node ./tests/io.ts",
         "build": "tsc",
-        "commit": "git add .; git commit -am '1.0.3'; git push; git fetch"
+        "commit": "git add .; git commit -am '2.0.0'; git push; git fetch"
     },
     "dependencies": {
         "fs-extra": "^10.1.0"
