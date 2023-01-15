@@ -34,7 +34,7 @@ export class JetStore<STORE_TYPE extends { [key: string]: any }> {
     private static makeStoreLocationPath(path: string) {
         path.replace("./", "").split("/").forEach((dir, i) => {
             /** Path that'll have to be checked */
-            const targetPath = path.replace("./", "").split("/").splice(0, i).join("") + "/" + dir;
+            const targetPath = [...path.replace("./", "").split("/").splice(0, i), dir].join("/");
             if (!existsSync(targetPath) && targetPath !== "") mkdirSync(targetPath)
         });
     }
@@ -64,13 +64,13 @@ export class JetStore<STORE_TYPE extends { [key: string]: any }> {
 
         /** Checks if the file exists, if it doesn't exists it's created */
         if (!existsSync(filePath)) appendFileSync(filePath, "");
-        writeFileSync(filePath, JSON.stringify(value));
+        writeFileSync(filePath, Buffer.from(JSON.stringify(value)).toString("base64"));
     }
 
     /** Read a key */
     readKey<KEY extends keyof STORE_TYPE>(key: KEY): STORE_TYPE[KEY] | null {
         try {
-            return JSON.parse(readFileSync(this.storeLocation + "/" + JetStore.hashing(key as string), "utf8"))
+            return JSON.parse(Buffer.from(readFileSync(this.storeLocation + "/" + JetStore.hashing(key as string), "utf8"), "base64").toString("utf-8"))
         } catch {
             return null;
         }
