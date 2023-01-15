@@ -44,15 +44,21 @@ export class JetStore<STORE_TYPE extends { [key: string]: any }> {
         return Buffer.from("v2s:" + encodeURIComponent(from)).toString("hex") + ".k"
     }
 
+    /** This function removes the hash of a key store */
+    private static unhashing(hash: string) {
+        const uncryptedButStillWithCustomKeys = Buffer.from(hash, "hex").toString("utf-8").replace("v2s:", "");
+        return uncryptedButStillWithCustomKeys.split("").splice(0, uncryptedButStillWithCustomKeys.length - 2).join("");
+    }
+
     /** Get all the keys entries of this instance, to do this it gets all the files/folders
-     * on the store location and returns the names of all the files */
+     * on the store location and returns their unhashed names */
     getEntries(): string[] {
         /** This variable only stores the files that are used as keys */
         const keyFiles: string[] = [];
         readdirSync(this.storeLocation).map(i => {
             /** Determines if the item is a file or a folder, if it's a folder it is not
             * listed as an entry */
-            if (!lstatSync(this.storeLocation + "/" + i).isDirectory()) keyFiles.push(i);
+            if (!lstatSync(this.storeLocation + "/" + i).isDirectory()) keyFiles.push(JetStore.unhashing(i));
         });
         return keyFiles;
     }
