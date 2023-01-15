@@ -47,7 +47,7 @@ export class JetStore<STORE_TYPE extends { [key: string]: any }> {
     /** This function removes the hash of a key store */
     private static unhashing(hash: string) {
         const uncryptedButStillWithCustomKeys = Buffer.from(hash, "hex").toString("utf-8").replace("v2s:", "");
-        return uncryptedButStillWithCustomKeys.split("").splice(0, uncryptedButStillWithCustomKeys.length - 2).join("");
+        return uncryptedButStillWithCustomKeys.split("").reverse().join("").replace("k.", "").split("").reverse().join("");
     }
 
     /** Get all the keys entries of this instance, to do this it gets all the files/folders
