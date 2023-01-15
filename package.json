@@ -1,6 +1,6 @@
 {
     "name": "jet-file",
-    "version": "2.0.4",
+    "version": "2.0.5",
     "description": "An efficient, production-ready, encrypted database utility.",
     "main": "./dist/index.js",
     "scripts": {
