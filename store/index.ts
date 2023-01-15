@@ -19,7 +19,7 @@ import {
  * And have many advantages:
  * - Database splitting
  * */
-export class JetStore {
+export class JetStore<STORE_TYPE extends { [key: string]: any }> {
     /** Store location path */
     private storeLocation: string;
 
@@ -58,18 +58,22 @@ export class JetStore {
     }
 
     /** Edit a key, a key is a file */
-    editKey(key: string, value: any) {
-        const keyHash = JetStore.hashing(key);
+    editKey<KEY extends keyof STORE_TYPE>(key: KEY, value: STORE_TYPE[KEY]) {
+        const keyHash = JetStore.hashing(key as string);
         const filePath = this.storeLocation + "/" + keyHash;
 
         /** Checks if the file exists, if it doesn't exists it's created */
         if (!existsSync(filePath)) appendFileSync(filePath, "");
         writeFileSync(filePath, JSON.stringify(value));
     }
-    
+
     /** Read a key */
-    readKey<T = any>(key: string): T {
-        return JSON.parse(readFileSync(this.storeLocation + "/" + JetStore.hashing(key), "utf8")) as T
+    readKey<KEY extends keyof STORE_TYPE>(key: KEY): STORE_TYPE[KEY] | null {
+        try {
+            return JSON.parse(readFileSync(this.storeLocation + "/" + JetStore.hashing(key as string), "utf8"))
+        } catch {
+            return null;
+        }
     }
 }
 

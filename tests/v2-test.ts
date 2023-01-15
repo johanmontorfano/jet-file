@@ -1,12 +1,10 @@
-import { JetStore } from "../v2";
+import { JetStore } from "../store";
 
 /** Create a new JetStore instance */
-const storage = new JetStore("v2-store/t1");
+const storage = new JetStore<{abc: boolean, z: number}>("v2-store/t1");
 
 storage.editKey("abc", true)
 console.log(storage.readKey("abc"))
-
-storage.editKey("", "ee")
-console.log(storage.readKey(""))
+storage.editKey("z", 12);
 
 console.log(storage.getEntries())
