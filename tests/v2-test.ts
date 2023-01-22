@@ -7,4 +7,5 @@ storage.editKey("abc", true)
 console.log(storage.readKey("abc"))
 storage.editKey("z", 12);
 
+storage.deleteKey("z");
 console.log(storage.getEntries())

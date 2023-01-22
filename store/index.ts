@@ -5,7 +5,8 @@ import {
     readFileSync,
     writeFileSync,
     readdirSync,
-    lstatSync
+    lstatSync,
+    rmSync
 } from "fs-extra";
 
 /**
@@ -63,10 +64,22 @@ export class JetStore<STORE_TYPE extends { [key: string]: any }> {
         return keyFiles;
     }
 
-    /** Edit a key, a key is a file */
+    /** Delete a key, a key is a file name */
+    deleteKey<KEY extends keyof STORE_TYPE>(key: KEY) {
+        const keyHash = JetStore.hashing(key as string);
+        const filePath = this.storeLocation + "/" + keyHash;
+
+        /** Checks if the file exists, if it exists it's deleted */
+        if (existsSync(filePath)) rmSync(filePath, { force: true });
+    }
+
+    /** Edit a key, keep in mind if a key is set to be `undefined` it's deleted */
     editKey<KEY extends keyof STORE_TYPE>(key: KEY, value: STORE_TYPE[KEY]) {
         const keyHash = JetStore.hashing(key as string);
         const filePath = this.storeLocation + "/" + keyHash;
+
+        /** If the value is undefined, the key is deleted */
+        if(value === undefined) return this.deleteKey(key);
 
         /** Checks if the file exists, if it doesn't exists it's created */
         if (!existsSync(filePath)) appendFileSync(filePath, "");
