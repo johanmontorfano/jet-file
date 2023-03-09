@@ -1,17 +1,17 @@
 {
     "name": "jet-file",
-    "version": "2.0.11",
+    "version": "2.0.12",
     "description": "An efficient, production-ready, encrypted database utility.",
     "main": "./dist/index.js",
     "scripts": {
         "test": "ts-node ./tests/io.ts",
-        "build": "tsc",
-        "commit": "git add .; git commit -am '2.0.2'; git push; git fetch"
+        "build": "tsc"
     },
     "dependencies": {
         "fs-extra": "^10.1.0"
     },
     "devDependencies": {
-        "@types/fs-extra": "^9.0.13"
+        "@types/fs-extra": "^9.0.13",
+        "@types/node": "^18.15.0"
     }
 }
