@@ -1,12 +1,12 @@
 # 🛫 Jet File
 Jet file is a lightweight utility designed for realtime services, data viability and security. It's designed to work using JSON as a file format.
 
-### Check out `JetStore`, it's the future JetFile working system. You should try it !
+### Check out `JetStore`, it's the future default JetFile's storage system. You should try it !
 
 ## Get Started with Jet File
-Jet File automatically handles directory creation to avoid any runtime errors with missing directories while creating a file.
+Jet File automatically handles directories making to avoid any runtime errors with missing directories while creating a file.
 
-It also handles file creation if the file don't exists.
+It also handles file creation if the file doesn't exists.
 
 To create a new Jet File instance, use the `JetFile` class and specify the path to the desired file.
 
@@ -58,7 +58,7 @@ You'll see below all the issues and improvements JetStore brings over JetFile:
 
 You'll see below a list of changes in how JetStore operates compared to JetFile:
 - JetStore stores each key data in an individual file, still hashing every data.
-- JetStore doesn't need a saving routing to prevent data loss as every operation is performed on the file and not the cache.
+- JetStore doesn't need a save-file routine to prevent data loss as every operation is performed on the file and not some RAM cache.
 - JetStore allows operations made on the disk way quicker as it doesn't need to determine and perform action on the data to be stored.
 
 ## How to get started quickly with JetStore
